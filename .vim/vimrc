@@ -1,0 +1,388 @@
+set nocompatible
+filetype off
+
+let &t_Co=256
+
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+let g:vundle_default_git_proto='git'
+
+Plugin 'gmarik/Vundle.vim'
+Plugin 'nanotech/jellybeans.vim'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'bling/vim-airline'
+Plugin 'kien/ctrlp.vim'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'godlygeek/tabular'
+Plugin 'ervandew/supertab'
+Plugin 'Rykka/colorv.vim'
+
+Plugin 'fcpg/vim-osc52'
+
+Plugin 'tpope/vim-obsession'
+Plugin 'dhruvasagar/vim-prosession'
+Plugin 'davidhalter/jedi-vim'
+Plugin 'Tagbar'
+
+Plugin 'nvie/vim-flake8'
+
+Plugin 'vim-syntastic/syntastic'
+
+Plugin 'Shougo/deoplete.nvim'
+Plugin 'roxma/nvim-yarp'
+Plugin 'roxma/vim-hug-neovim-rpc'
+
+
+"keep this at bottom after plugin shit
+call vundle#end()
+filetype plugin indent on
+
+let mapleader=","
+
+
+set background=dark
+colorscheme jellybeans
+
+"backups
+set backup
+set backupdir=~/.vim/backup
+set directory=~/.vim/tmp
+
+"ui
+set ruler         "ruler on
+set nu            "line numbers on
+set nowrap        "line wrapping off
+set laststatus=2  "always show the statusline
+set cmdheight=2
+set encoding=utf-8
+"set statusline+=%F
+
+"behaviors
+syntax enable
+set autoread           "automatically reload changes if detected
+set wildmenu           "turn on wild menu
+set hidden             "change buffer - without saving
+set history=768        "number of things to remember in history.
+set cf                 "enable error files & error jumping.
+"set clipboard=unnamedplus "yanks go on clipboard instead.
+set clipboard=unnamed
+set autowrite          "writes on make/shell commands
+set timeoutlen=350     "time to wait for a command (after leader for example)
+
+"set foldmethod=indent
+"set foldlevelstart=99  "remove folds
+
+set formatoptions=crql
+
+"text formatting
+set list listchars=tab:→\ ,trail:·
+set backspace=2  "delete everything with backspace
+set cindent      "c style indents
+set autoindent   "indent new lines
+set shiftwidth=4 "tabs under smart indent
+set tabstop=4
+set softtabstop=4
+set smarttab
+set smartindent
+set expandtab
+
+"searching
+set ignorecase "case insensitive search
+set smartcase "non-case sensitive search
+set incsearch
+set hlsearch
+set wildignore+=*.o,*.obj,*.so,*.pyc,.svn,.hg,.git
+
+"visual
+set showmatch  "show matching brackets.
+set matchtime=2 "how many tenths of a second to blink
+
+"annoying shit
+set noerrorbells
+set novisualbell
+set t_vb=
+
+"blasphemous input method
+set mousehide "hide mouse after chars typed
+set mouse=a "mouse in all modes
+
+"speed up auto-completion
+set complete=.,w,b,u,U
+
+"fold/unfold
+nnoremap <space> za
+vnoremap <space> zf
+
+
+"common typos and simplification
+"commanr W w
+"command Q q
+
+map <F1> <Esc>
+imap <F1> <Esc>
+
+""doc lookup easy to fat finger
+"nmap K k
+"vmap K k
+
+"easier line completion
+imap <C-l> <C-x><C-l>
+
+"silly shift key
+nnoremap ; :
+vnoremap ; :
+
+"%% in command mode to print file path
+cnoremap %% <C-R>=expand('%:h').'/'<cr>
+
+
+
+"leader shit
+
+"toggle spelling mode with ,s
+nmap <silent> <leader>s :set spell!<CR>
+
+"edit vimrc with ,v
+nmap <silent> <leader>v :e ~/.vim/vimrc<CR>
+
+"window movement
+nmap <silent> <A-Up> :wincmd k<CR>
+nmap <silent> <A-Down> :wincmd j<CR>
+nmap <silent> <A-Left> :wincmd h<CR>
+nmap <silent> <A-Right> :wincmd l<CR>
+
+"previous window
+nmap <silent> <A-p> :wincmd p<CR>
+
+"equalize window sizes
+nmap <silent> <leader>w= :wincmd =<CR>
+
+"window splitting
+set splitbelow
+set splitright
+nmap <silent> <leader>sh :split<CR>
+nmap <silent> <leader>sv :vsplit<CR>
+
+"sometimes one hand jumps the gun
+nmap <silent> <leader>hs :split<CR>
+nmap <silent> <leader>vs :vsplit<CR>
+nmap <silent> <leader>sc :close<CR>
+
+
+
+"plugin stuff
+
+"syntastic
+let g:syntastic_enable_signs=1
+let g:syntastic_auto_loc_list=1
+
+"indent guides
+let g:indent_guides_enable_on_vim_startup=1
+
+
+"tabularize
+nmap <Leader>t= :Tabularize/ =<CR>
+vmap <Leader>t= :Tabularize/ =<CR>
+
+nmap <Leader>t: :Tabularize /:\zs<CR>
+vmap <Leader>t: :Tabularize /:\zs<CR>
+
+nmap <Leader>t, :Tabularize /,\zs<CR>
+vmap <Leader>t, :Tabularize /,\zs<CR>
+
+nmap <Leader>t> :Tabularize /=>\zs<CR>
+vmap <Leader>t> :Tabularize /=>\zs<CR>
+
+
+"fugitive
+nmap <Leader>gc :Gcommit<CR>
+nmap <Leader>gw :Gwrite<CR>
+nmap <Leader>gs :Gstatus<CR>
+nmap <Leader>gp :Git push<CR>
+nmap <Leader>gu :Git pull<CR>
+nmap <Leader>gd :Gdiff<CR>
+nmap <Leader>gx :wincmd h<CR>:q<CR>
+
+
+"zoom window to full size
+nmap <silent> <leader>wo :ZoomWin<CR>
+
+"ctrl-p
+nnoremap <leader>t :CtrlP<CR>
+
+
+"jellybeans color stuff
+
+"colorize css attributes
+hi! link cssAttr Constant
+hi Normal ctermbg=NONE
+hi NonText ctermbg=black
+
+
+
+"functions
+
+"cleanup trailing whitespace
+map <leader>ws :%s/\s\+$//e<CR>
+command! FixTrailingWhiteSpace :%s/\s\+$//e
+
+
+function! DoPrettyXML()
+    "save the filetype so we can restore it later
+    let l:origft = &ft
+    set ft=
+    "delete the xml header if it exists. This will
+    "permit us to surround the document with fake tags
+    "without creating invalid xml.
+    1s/<?xml .*?>//e
+    "insert fake tags around the entire document.
+    "This will permit us to pretty-format excerpts of
+    "XML that may contain multiple top-level elements.
+    0put ='<PrettyXML>'
+    $put ='</PrettyXML>'
+    silent %!xmllint --format -
+    "xmllint will insert an <?xml?> header. it's easy enough to delete
+    "if you don't want it.
+    "delete the fake tags
+    2d
+    $d
+    "restore the 'normal' indentation, which is one extra level
+    "too deep due to the extra tags we wrapped around the document.
+    silent %<
+    "back to home
+    1
+    "restore the filetype
+    exe "set ft=". l:origft
+endfunction
+command! PrettyXML call DoPrettyXML()
+
+
+"custom bindings
+
+"autoindent
+map <leader>= :Tab/ =<CR>
+map <leader>. :Tab/=><CR>
+
+
+""yank text to osc52 clipboard
+noremap <leader>y y:call SendViaOSC52(getreg('"'))<CR>
+
+inoremap <Nul> <C-x><C-o>
+imap <c-space> <C-x><C-o>
+
+"preserve indent when pasting from clipboard
+noremap <leader>p :set paste<CR>:put +<CR>:set nopaste<CR>
+
+"let g:vim_arduino_auto_open_serial = 1
+
+"let g:pymode_lint_ignore="E502,E501,E303,E302,E251,E221,E265,E202,E203,E261,E262,E201,E116"
+let g:pymode_rope_lookup_project = 0
+let g:pymode_rope_complete_on_dot = 1
+let g:pymode_rope_completion = 1
+let g:pymode_rope = 0
+let g:pymode_rope_goto_definition_bind = "<C-]>"
+let g:pymode_doc_bind = "<C-S-d>"
+let g:pymode_breakpoint = 0
+
+"let g:tmuxline_preset = 'powerline'
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
+let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
+
+let g:airline_symbols = {}
+let g:airline_symbols.linenr = ''
+let g:airline_symbols.maxlinenr = ''
+let g:airline_symbols.whitespace = ''
+
+let g:airline#extensions#whitespace#checks = ['indents', 'trailing', 'mixed-indent-file', 'conflict']
+
+
+nnoremap <expr> > (len(filter(range(0, bufnr('$')), 'buflisted(v:val)')) > 1 ? ":bn\<cr>" : "\<right>")
+nnoremap <expr> < (len(filter(range(0, bufnr('$')), 'buflisted(v:val)')) > 1 ? ":bp\<cr>" : "\<left>")
+
+" Bclose() {{{2
+" delete buffer without closing window
+function! Bclose()
+    let curbufnr = bufnr("%")
+    let altbufnr = bufnr("#")
+
+    if buflisted(altbufnr)
+        buffer #
+    else
+        bnext
+    endif
+
+    if bufnr("%") == curbufnr
+        new
+    endif
+
+    if buflisted(curbufnr)
+        execute("bdelete! " . curbufnr)
+    endif
+endfunction
+
+
+set diffopt+=iwhite
+set diffexpr=DiffW()
+function DiffW()
+    let opt = ""
+    if &diffopt =~ "icase"
+        let opt = opt . "-i "
+    endif
+    if &diffopt =~ "iwhite"
+        let opt = opt . "-w " " vim uses -b by default
+    endif
+    silent execute "!diff -a --binary " . opt . v:fname_in . " " . v:fname_new .  " > " . v:fname_out
+endfunction
+
+
+command Todo noautocmd vimgrep /todo\|fixme/j ** | cw
+set wildignore+=**tests/**
+set wildignore+=files/**
+set wildignore+=bower_components/**
+set wildignore+=ios-deploy/**
+set wildignore+=static/**
+
+map <leader>? :Todo<CR>
+
+let g:jedi#use_splits_not_buffers = "left"
+let g:jedi#popup_on_dot = 0
+let g:jedi#show_call_signatures = "2"
+
+
+autocmd BufWritePre *.py :%s/\s\+$//e
+autocmd BufWritePost *.py call Flake8()
+
+
+"auto commands
+
+if has("autocmd")
+    "no formatting on o key newlines
+    autocmd BufNewFile,BufEnter * set formatoptions-=o
+
+    "stfu about untitled documents
+    autocmd FocusLost silent! :wa
+endif
+
+let g:deoplete#enable_at_startup = 1
+
+
+" some custom crap for UU data warehouse scala model sorting of properties
+fu! DataWarehouseCompare(i1, i2)
+    let l:score1 = i1 =~ '.\{-}(UUID)' ? 2 : i1 =~ '.\{-}(Timestamp)' ? 1 : 0
+    let l:score2 = i2 =~ '.\{-}(UUID)' ? 2 : i2 =~ '.\{-}(Timestamp)' ? 1 : 0
+
+    return l:score1 == l:score2 ? 0 : l:score1 > l:score2 ? 1 : -1
+endfu
+
+fu! DWSort(linestart, lineend)
+    let l:lines = getline(a:linestart, a:lineend)
+    sort(l:lines,"DataWarehouseCompare")
+
+    let l:nlines = a:lineend - a:linestart
+    exe 'normal! '.a:linestart.'G'.l:nlines.'dd'
+    let @l = join(l:lines, "\n")
+    exe 'normal! '.a:linestart.'G"lP'
+endfu

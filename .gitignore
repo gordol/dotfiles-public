@@ -1,0 +1,10 @@
+tmp
+temp
+*.tmp
+.DS_Store
+backup
+session
+.oh-my-zsh/
+.tmux-battery/
+.tmux-continuum/
+.tmux-resurrect/
