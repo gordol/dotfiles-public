@@ -101,6 +101,7 @@ set t_vb=
 
 "blasphemous input method
 set mousehide "hide mouse after chars typed
+set ttymouse=xterm2 "tmux things
 set mouse=a "mouse in all modes
 
 "speed up auto-completion
@@ -338,7 +339,7 @@ endfunction
 
 
 command Todo noautocmd vimgrep /todo\|fixme/j ** | cw
-set wildignore+=**tests/**
+"set wildignore+=**tests/**
 set wildignore+=files/**
 set wildignore+=bower_components/**
 set wildignore+=ios-deploy/**
@@ -351,8 +352,8 @@ let g:jedi#popup_on_dot = 0
 let g:jedi#show_call_signatures = "2"
 
 
-autocmd BufWritePre *.py :%s/\s\+$//e
-autocmd BufWritePost *.py call Flake8()
+"autocmd BufWritePre *.py :%s/\s\+$//e
+"autocmd BufWritePost *.py call Flake8()
 
 
 "auto commands
@@ -385,3 +386,27 @@ fu! DWSort(linestart, lineend)
     let @l = join(l:lines, "\n")
     exe 'normal! '.a:linestart.'G"lP'
 endfu
+
+" custom git stuff
+
+if !exists('g:git_grep_command')
+  let g:git_grep_command = 'git grep -in '
+endif
+
+if !exists('g:git_grep_no_map')
+  nnoremap <silent> <Leader>gw :GitGrepWord<CR>
+endif
+
+function! s:GitGrep(terms)
+  let expr = g:git_grep_command.'"'.a:terms.'"'
+  cgetexpr system(expr)
+  cwin
+  echo 'Number of matches: ' . len(getqflist())
+endfunction
+
+function! s:GitGrepWord()
+  call s:GitGrep(expand("<cword>"))
+endfunction
+
+command! -nargs=0 GitGrepWord :call s:GitGrepWord()
+command! -nargs=+ GitGrep     :call s:GitGrep(<q-args>)
