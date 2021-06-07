@@ -43,9 +43,31 @@ autoload colors && colors
 KEYTIMEOUT=1
 
 alias tasks='git grep -EIn "todo|fixme"'
+alias releases='git branch -a --sort=-committerdate| grep remotes/origin/release | head'
+alias changes='git log --oneline $(releases|head -n 2|tr -d " "|tail -n 1)..$(releases|head -n 1|tr -d " ")'
 
 export DEVELOPER_DIR="/Library/Developer/CommandLineTools"
 
 alias pp='python -m json.tool'
 
 alias pip_upgrade_all="(echo pip; pip freeze --local | awk 'BEGIN{FS=\"==\"}{print $1}') | xargs pip install -U"
+
+
+export PATH="/Users/thomaslowrey/.pyenv/shims:${PATH}"
+export PYENV_SHELL=zsh
+source '/usr/local/Cellar/pyenv/1.2.27/libexec/../completions/pyenv.zsh'
+command pyenv rehash 2>/dev/null
+pyenv() {
+  local command
+  command="${1:-}"
+  if [ "$#" -gt 0 ]; then
+    shift
+  fi
+
+  case "$command" in
+  rehash|shell|virtualenvwrapper|virtualenvwrapper_lazy)
+    eval "$(pyenv "sh-$command" "$@")";;
+  *)
+    command pyenv "$command" "$@";;
+  esac
+}
