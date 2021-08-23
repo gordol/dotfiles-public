@@ -8,3 +8,4 @@ session
 .tmux-battery/
 .tmux-continuum/
 .tmux-resurrect/
+.vim/.netrwhist

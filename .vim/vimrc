@@ -25,6 +25,7 @@ Plugin 'Tagbar'
 Plugin 'nvie/vim-flake8'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'tpope/vim-fugitive'
+Plugin 'rbong/vim-flog'
 Plugin 'Shougo/deoplete.nvim'
 Plugin 'roxma/nvim-yarp'
 Plugin 'roxma/vim-hug-neovim-rpc'
@@ -390,23 +391,33 @@ endfu
 " custom git stuff
 
 if !exists('g:git_grep_command')
-  let g:git_grep_command = 'git grep -in '
+    let g:git_grep_command = 'git grep -in '
 endif
 
 if !exists('g:git_grep_no_map')
-  nnoremap <silent> <Leader>gw :GitGrepWord<CR>
+    nnoremap <silent> <Leader>gw :GitGrepWord<CR>
 endif
 
 function! s:GitGrep(terms)
-  let expr = g:git_grep_command.'"'.a:terms.'"'
-  cgetexpr system(expr)
-  cwin
-  echo 'Number of matches: ' . len(getqflist())
+    let expr = g:git_grep_command.'"'.a:terms.'"'
+    cgetexpr system(expr)
+    cwin
+    echo 'Number of matches: ' . len(getqflist())
 endfunction
 
 function! s:GitGrepWord()
-  call s:GitGrep(expand("<cword>"))
+    call s:GitGrep(expand("<cword>"))
 endfunction
 
 command! -nargs=0 GitGrepWord :call s:GitGrepWord()
 command! -nargs=+ GitGrep     :call s:GitGrep(<q-args>)
+
+" git log --graph --pretty='%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --stat
+
+function! s:GitDiff(branch)
+    let g:gitgutter_diff_base = a:branch
+    GitGutter
+endfunction
+
+command! -nargs=0 GitDiff :call s:GitDiff('HEAD')
+command! -nargs=+ GitDiff :call s:GitDiff(<q-args>)

@@ -4,6 +4,7 @@ ZSH_THEME="af-magic"
 DISABLE_LS_COLORS="true"
 COMPLETION_WAITING_DOTS="true"
 
+export PYTHONDONTWRITEBYTECODE=1
 export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
 
 plugins=(git virtualenvwrapper autojump battery)
@@ -43,8 +44,8 @@ autoload colors && colors
 KEYTIMEOUT=1
 
 alias tasks='git grep -EIn "todo|fixme"'
-alias releases='git branch -a --sort=-committerdate| grep remotes/origin/release | head'
-alias changes='git log --oneline $(releases|head -n 2|tr -d " "|tail -n 1)..$(releases|head -n 1|tr -d " ")'
+alias releases='git branch -a --sort=-committerdate| grep release- | head'
+alias changes='git log --format="%C(auto) %h %s" $(releases|head -n 2|tr -d " "|tail -n 1)..$(releases|head -n 1|tr -d " ")'
 
 export DEVELOPER_DIR="/Library/Developer/CommandLineTools"
 
@@ -55,7 +56,7 @@ alias pip_upgrade_all="(echo pip; pip freeze --local | awk 'BEGIN{FS=\"==\"}{pri
 
 export PATH="/Users/thomaslowrey/.pyenv/shims:${PATH}"
 export PYENV_SHELL=zsh
-source '/usr/local/Cellar/pyenv/1.2.27/libexec/../completions/pyenv.zsh'
+source /usr/local/Cellar/pyenv/*/libexec/../completions/pyenv.zsh
 command pyenv rehash 2>/dev/null
 pyenv() {
   local command
