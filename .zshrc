@@ -31,6 +31,8 @@ alias ssh='TERM=xterm ssh'
 
 alias t='task'
 
+alias payload='dump_payload(){echo -e "import base64,json,sys,zlib\ntry:\n  print(json.dumps(json.loads(zlib.decompress(base64.b64decode(\"$1\"))), indent=4, sort_keys=True))\nexcept zlib.error:\n  print(json.dumps(json.loads(zlib.decompress(base64.b64decode(\"$1\"), 16|zlib.MAX_WBITS)), indent=4, sort_keys=True))" | python3};dump_payload'
+
 
 fpath=($fpath /usr/local/share/doc/task/scripts/zsh)
 autoload -Uz compinit
@@ -44,19 +46,20 @@ autoload colors && colors
 KEYTIMEOUT=1
 
 alias tasks='git grep -EIn "todo|fixme"'
-alias releases='git branch -a --sort=-committerdate| grep release- | head'
+alias releases='git branch -a --sort=-committerdate| grep "remotes/origin/release-" | head'
 alias changes='git log --format="%C(auto) %h %s" $(releases|head -n 2|tr -d " "|tail -n 1)..$(releases|head -n 1|tr -d " ")'
 
 export DEVELOPER_DIR="/Library/Developer/CommandLineTools"
 
 alias pp='python -m json.tool'
 
+alias reinit='source ~/Bin/vedareinit.sh'
+
 alias pip_upgrade_all="(echo pip; pip freeze --local | awk 'BEGIN{FS=\"==\"}{print $1}') | xargs pip install -U"
-
-
-export PATH="/Users/thomaslowrey/.pyenv/shims:${PATH}"
+export PATH="~/.pyenv/shims:${PATH}"
 export PYENV_SHELL=zsh
-source /usr/local/Cellar/pyenv/*/libexec/../completions/pyenv.zsh
+source /usr/local/Cellar/pyenv/*/completions/pyenv.zsh
+
 command pyenv rehash 2>/dev/null
 pyenv() {
   local command
@@ -72,3 +75,5 @@ pyenv() {
     command pyenv "$command" "$@";;
   esac
 }
+
+ulimit -S -n 1024

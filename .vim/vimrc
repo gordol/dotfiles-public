@@ -8,28 +8,58 @@ call vundle#begin()
 let g:vundle_default_git_proto='git'
 
 Plugin 'gmarik/Vundle.vim'
+
+"ui tweaks
 Plugin 'nanotech/jellybeans.vim'
-Plugin 'airblade/vim-gitgutter'
+Plugin 'Rykka/colorv.vim'
 Plugin 'bling/vim-airline'
-Plugin 'kien/ctrlp.vim'
-Plugin 'scrooloose/nerdcommenter'
 Plugin 'nathanaelkane/vim-indent-guides'
+
+"tabulation
 Plugin 'godlygeek/tabular'
 Plugin 'ervandew/supertab'
-Plugin 'Rykka/colorv.vim'
+
+"fuzzy finder
+Plugin 'kien/ctrlp.vim'
+
+"clipboard
 Plugin 'fcpg/vim-osc52'
+
+"session mgmt
 Plugin 'tpope/vim-obsession'
 Plugin 'dhruvasagar/vim-prosession'
-Plugin 'davidhalter/jedi-vim'
-Plugin 'Tagbar'
-Plugin 'nvie/vim-flake8'
+
+"comment shortcuts
+Plugin 'scrooloose/nerdcommenter'
+
+"syntax
 Plugin 'vim-syntastic/syntastic'
+
+"git things
+Plugin 'airblade/vim-gitgutter'
 Plugin 'tpope/vim-fugitive'
 Plugin 'rbong/vim-flog'
-Plugin 'Shougo/deoplete.nvim'
+
+"neovim compat
 Plugin 'roxma/nvim-yarp'
 Plugin 'roxma/vim-hug-neovim-rpc'
 
+"typescript
+Plugin 'leafgarland/typescript-vim'
+Plugin 'quramy/tsuquyomi'
+
+"python
+Plugin 'davidhalter/jedi-vim'
+Plugin 'nvie/vim-flake8'
+
+"completion
+"Plugin 'Shougo/deoplete.nvim'
+Plugin 'neoclide/coc.nvim'
+
+"uml stuff
+Plugin 'aklt/plantuml-syntax'
+Plugin 'tyru/open-browser.vim'
+Plugin 'weirongxu/plantuml-previewer.vim'
 
 "keep this at bottom after plugin shit
 call vundle#end()
@@ -421,3 +451,13 @@ endfunction
 
 command! -nargs=0 GitDiff :call s:GitDiff('HEAD')
 command! -nargs=+ GitDiff :call s:GitDiff(<q-args>)
+
+let g:tsuquyomi_disable_quickfix = 1
+let g:syntastic_typescript_checkers = ['tsuquyomi'] " You shouldn't use 'tsc' checker.
+
+let g:typescript_indent_disable = 1
+
+autocmd FileType typescript setlocal completeopt+=menu,preview
+autocmd FileType typescript nnoremap <silent> <leader>d :TsuDefinition<CR>
+autocmd FileType typescript nnoremap <silent> <leader>r :TsuReferences<CR>
+autocmd FileType typescript nnoremap <silent> <leader>i :TsuImplementation<CR>
