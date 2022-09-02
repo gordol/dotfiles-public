@@ -7,12 +7,16 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 let g:vundle_default_git_proto='git'
 
+"set pythonthreedll=/usr/local/Cellar/python@3.10/3.10.4/Frameworks/Python.framework/Versions/3.10/Python
+"set pythonthreehome=/usr/local/Cellar/python@3.10/3.10.4/Frameworks/Python.framework/Versions/3.10/
+
 Plugin 'gmarik/Vundle.vim'
 
 "ui tweaks
 Plugin 'nanotech/jellybeans.vim'
 Plugin 'Rykka/colorv.vim'
 Plugin 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 Plugin 'nathanaelkane/vim-indent-guides'
 
 "tabulation
@@ -21,6 +25,7 @@ Plugin 'ervandew/supertab'
 
 "fuzzy finder
 Plugin 'kien/ctrlp.vim'
+"Plugin 'wincent/Command-T'
 
 "clipboard
 Plugin 'fcpg/vim-osc52'
@@ -50,10 +55,10 @@ Plugin 'quramy/tsuquyomi'
 
 "python
 Plugin 'davidhalter/jedi-vim'
-Plugin 'nvie/vim-flake8'
+"Plugin 'nvie/vim-flake8'
 
 "completion
-"Plugin 'Shougo/deoplete.nvim'
+Plugin 'Shougo/deoplete.nvim'
 Plugin 'neoclide/coc.nvim'
 
 "uml stuff
@@ -61,12 +66,25 @@ Plugin 'aklt/plantuml-syntax'
 Plugin 'tyru/open-browser.vim'
 Plugin 'weirongxu/plantuml-previewer.vim'
 
+"scala stuff
+Plugin 'megaannum/self'
+Plugin 'megaannum/scala_commenter'
+Plugin 'derekwyatt/vim-scala'
+
+"ui fanciness
+"Plugin 'mhinz/vim-startify'
+Plugin 'mbbill/undotree'
+Plugin 'preservim/nerdtree'
+
+Plugin 'preservim/tagbar'
+
 "keep this at bottom after plugin shit
 call vundle#end()
 filetype plugin indent on
 
 let mapleader=","
 
+let g:deoplete#enable_at_startup = 1
 
 set background=dark
 colorscheme jellybeans
@@ -200,7 +218,6 @@ nmap <silent> <leader>vs :vsplit<CR>
 nmap <silent> <leader>sc :close<CR>
 
 
-
 "plugin stuff
 
 "syntastic
@@ -318,6 +335,7 @@ let g:pymode_breakpoint = 0
 
 "let g:tmuxline_preset = 'powerline'
 let g:airline#extensions#tabline#enabled = 1
+"let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
@@ -332,6 +350,13 @@ let g:airline#extensions#whitespace#checks = ['indents', 'trailing', 'mixed-inde
 
 nnoremap <expr> > (len(filter(range(0, bufnr('$')), 'buflisted(v:val)')) > 1 ? ":bn\<cr>" : "\<right>")
 nnoremap <expr> < (len(filter(range(0, bufnr('$')), 'buflisted(v:val)')) > 1 ? ":bp\<cr>" : "\<left>")
+
+" tab things
+nnoremap <silent> tt :tabnew<CR>
+nnoremap <silent> tw :tabclose<CR>
+nnoremap <silent> tn :tabnext<CR>
+nnoremap <silent> tp :tabprevious<CR>
+nnoremap <silent> tb :tabprevious<CR>
 
 " Bclose() {{{2
 " delete buffer without closing window
@@ -370,16 +395,11 @@ endfunction
 
 
 command Todo noautocmd vimgrep /todo\|fixme/j ** | cw
-"set wildignore+=**tests/**
-set wildignore+=files/**
-set wildignore+=bower_components/**
-set wildignore+=ios-deploy/**
-set wildignore+=static/**
 
 map <leader>? :Todo<CR>
 
 let g:jedi#use_splits_not_buffers = "left"
-let g:jedi#popup_on_dot = 0
+let g:jedi#popup_on_dot = 1
 let g:jedi#show_call_signatures = "2"
 
 
@@ -397,7 +417,6 @@ if has("autocmd")
     autocmd FocusLost silent! :wa
 endif
 
-let g:deoplete#enable_at_startup = 1
 
 
 " some custom crap for UU data warehouse scala model sorting of properties
@@ -461,3 +480,25 @@ autocmd FileType typescript setlocal completeopt+=menu,preview
 autocmd FileType typescript nnoremap <silent> <leader>d :TsuDefinition<CR>
 autocmd FileType typescript nnoremap <silent> <leader>r :TsuReferences<CR>
 autocmd FileType typescript nnoremap <silent> <leader>i :TsuImplementation<CR>
+
+let g:syntastic_python_checkers = ['flake8', 'mypy', 'pydocstyle', 'pylint', 'python']
+
+" scala docgen stuff
+unlet! g:scommenter_class_author
+unlet! g:scommenter_file_author
+unlet! g:scommenter_class_version
+unlet! g:scommenter_since_release
+unlet! g:scommenter_class_svn_id
+unlet! g:scommenter_file_copyright_line
+unlet! g:scommenter_company_name
+unlet! g:scommenter_file_copyright_list
+
+
+" iterm mouse shit
+if has('mouse_sgr')
+    set ttymouse=sgr
+endif
+
+"nmap <C-Left> gT
+"nmap <C-Right> gt 
+

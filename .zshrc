@@ -6,6 +6,10 @@ COMPLETION_WAITING_DOTS="true"
 
 export PYTHONDONTWRITEBYTECODE=1
 export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
+#export VIRTUALENVWRAPPER_PYTHON=/usr/local/opt/python@3.10/bin/python3
+
+#set pythonthreedll=/usr/local/Cellar/python@3.10/3.10.4/Frameworks/Python.framework/Versions/3.10/Python
+#set pythonthreehome=/usr/local/Cellar/python@3.10/3.10.4/Frameworks/Python.framework/Versions/3.10/
 
 plugins=(git virtualenvwrapper autojump battery)
 
@@ -17,7 +21,9 @@ setopt AUTO_CD
 export ZSH_DISABLE_COMPFIX="true"
 source $ZSH/oh-my-zsh.sh
 
+export PATH="/usr/local/sbin:$PATH"
 export PATH=$HOME/.local/bin:$HOME/Bin:$PATH
+export PATH="/usr/local/opt/python@3.10/bin:$PATH"
 
 [[ -s $HOME/.tmuxinator/scripts/tmuxinator ]] && source $HOME/.tmuxinator/scripts/tmuxinator
 export TERM=xterm-256color
@@ -77,3 +83,12 @@ pyenv() {
 }
 
 ulimit -S -n 1024
+
+# scala / sbt / openjdk 8 things
+export PATH="/usr/local/opt/openjdk@8/bin:$PATH"
+export PATH="/usr/local/opt/sbt@0.13/bin:$PATH"
+export CPPFLAGS="-I/usr/local/opt/openjdk@8/include"
+
+alias glg='git log --graph --stat'
+
+alias vd="vd --motd-url=None"
